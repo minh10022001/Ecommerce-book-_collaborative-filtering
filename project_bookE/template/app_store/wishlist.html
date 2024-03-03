@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock %}
+{% load humanize %}
+{% block content %}
+
+
+    {% if count_wish == 0 %}
+        <div class="container-fluid  mt-100" style = 'padding-top:100px; margin-bottom:5%'>
+			<div class="row">
+				 <div class="col-md-12">
+					<div class="card-body cart">
+                        <div class="col-sm-12 empty-cart-cls text-center">
+                            {% load static %}
+                            <img src="{% static 'images/wishlist.png' %}" width="100" height="100" class="img-fluid mb-4 mr-3">
+                            <h3><strong>Bạn chưa yêu thích sản phẩm nào</strong></h3>
+                            <h4>Hãy tới của hàng </h4>
+                            <a href="{% url 'home'  %}" class="btn btn-success cart-btn-transform m-3" data-abc="true" style="border-radius: 7px;">Trang chủ</a>
+                        </div>
+                    </div>
+				</div>
+			</div>
+		</div>
+    {% else %}
+        <div class="container-fluid bg-secondary mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+            <h1 class="font-weight-semi-bold text-uppercase mb-3" style = "font-size: 25px"></h1>
+            <h1 class="font-weight-semi-bold text-uppercase mb-3" style = "font-size: 25px;color:#002D62"> <img class="icon" src="{% static 'images/wishlist1.png' %}" style = "width:55px;margin-right:5px">Sách Yêu Thích</h1>
+        </div>
+</div>
+        <div class="container" style = "margin-bottom:5%">
+        <div class="row">
+            <div class="col-md-12 table-responsive">
+                {% comment %} <h3>Danh Sách Mặt Hàng Yêu Thích</h3> {% endcomment %}
+                <hr>
+                <table class="table">
+                    <thead>
+                        <tr style = "color:black; text-algin:center">
+                            <th>STT</th>
+                            <th>ID</th>
+                            <th>Tên mặt hàng</th>
+                            <th>Ảnh</th>
+                            <th>Giá</th>
+                            <th>Thời gian</th>
+                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for wish in wishListItem %}
+                        <tr style = "color:black; text-algin:center">
+                            <td>{{forloop.counter}}</td>
+                            <td><a href="{% url 'productdetail' wish.id_product.slug %}" style = "color:blue;">#PRODUCT_{{wish.id_product.id}}</a></td>
+                            <td>{{wish.id_product.name}}</td>
+                            <td><img src="{{wish.id_product.image.url}}" style="height:150px;" alt=""></td>
+                            <td>{{wish.id_product.price}} Đ</td>
+                            <td>{{wish.create_at}}</td>
+                            <td> <a href="{% url 'updateWishList' wish.id_product.id %}?action=rmv" class="btn btn-danger" style = 'border-radius:10px' >Xóa</a></td>
+                        
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+    {% endif%}
+
+
+{% endblock %}

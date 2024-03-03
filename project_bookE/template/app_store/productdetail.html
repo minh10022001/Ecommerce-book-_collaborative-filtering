@@ -1,0 +1,263 @@
+{% extends 'base.html' %}
+
+{% block title %}{{product.name}}{% endblock %}
+{% load humanize %}
+  {% load static %}
+{% block content %}
+<div class="container-fluid py-5" style =  "margin: 0px 0px 0px 0px;background-color:#EDF1FF;"> 
+        <div class="row px-xl-5" style = "background-color:#fff; padding: 30px; border-radius: 25px; margin: 0px 0px 0px 0px;">
+            <div class="col-lg-6 pb-5" style= "background-color:white;border-style: solid;border-color: #C0C0C0;  padding:20px; border-radius:10px">
+                <div id="product-carousel" class="carousel slide" data-ride="carousel"style = "text-align: center;">
+                    <img src="{{product.image.url}}" alt="" class="img-fluid" style="max-height: 350px ;width:100%; object-fit: contain;">
+                </div>
+            </div>
+           
+            <div class="col-lg-6 pb-5" style = "padding-left:10%; padding-top:5%"  >
+                
+                {% comment %} <h3 class="font-weight-semi-bold" style = 'color:blue'>{{product.name}}</h3> {% endcomment %}
+                <h3 class="font-weight" style = 'color:blue'>{{product.name}}</h3>
+                <br>
+                 <h6 class="my-3" style = "margin-left:0px;">
+                    <span class="avg-rating">{{product.avg_rating}}</span>/5
+                    <i class="fa fa-star text-warning"></i
+                    ><small class="pt-1"> ({{product.count_review}} đánh giá )</small>
+                </h6>
+                <br>
+                <h3 class="" style = "font-size: 1.2rem;margin-left:0px;">Giá:<b> {{product.price|intcomma}} VND</b> </h3>
+                <h3 class="" style = "font-size: 1.3rem;margin-left:0px;">Tác giả:<b> {{product.author}} </b></h3>
+                  <h3 class="" style = "font-size: 1.2rem;margin-left:0px;">Danh mục:<b> {{product.id_category.category_name}} </b></h3>
+              
+                <br>
+                <div class="d-flex align-items-center mb-4 pt-2" style = "margin-left:10px">
+                      <a href="{% url 'addtocart' product.id %}" class="btn btn-secondary px-3" style = "border-radius: 5px"> <img class="icon" src="{% static 'images/cart2.png' %}" style = "width:35px;margin-right:5px"></i>Thêm vào giỏ hàng</a>
+                </div>
+              
+            </div>
+        </div>
+        </div>
+    
+
+        <div class="row px-xl-5">
+            <div class="col">
+                <div class="nav nav-tabs justify-content-center border-secondary mb-4">
+                   
+                    <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-1" style = 'color:black'>Thông tin</a>
+                    <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2" style = 'color:black'>Bình luận</a>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="tab-pane-1">
+                        <h4 class="mb-3">Thông tin chi tiết</h4>
+                            <div>
+                               
+                                    <table class="table table-striped">
+                                        
+                                        {%  if product.is_authenic is not None and  product.is_authenic != 'None' %}
+                                        <tr>
+                                            <td style ="color:black">Hàng chính hãng</td>
+                                            <td>{{product.is_authenic}}</td>
+                                        </tr>
+                                        {% endif %}
+                                         {%  if product.publication_year is not None  %}
+                                        <tr>
+                                            <td style ="color:black">Năm sản xuất</td>
+                                            <td>{{product.publication_year}}</td>
+                                        </tr>
+                                        {% endif %}
+                                         {%  if product.dimension is not None and  product.dimension != 'None' %}
+                                        <tr>
+                                            <td style ="color:black">Kích thước</td>
+                                            <td>{{product.dimension}}</td>
+                                        </tr>
+                                        {% endif %}
+                                        {%  if product.publisher is not None and  product.publisher != 'None' %}
+                                        <tr>
+                                            <td style ="color:black">Công ty phát hành</td>
+                                            <td>{{product.publisher}}</td>
+                                        </tr>
+                                        {% endif %}
+                                        {%  if product.manufacturer is not None and  product.manufacturer != 'None' %}
+                                        <tr>
+                                            <td style ="color:black">Nhà xuất bản</td>
+                                            <td>{{product.manufacturer}}</td>
+                                        </tr>
+                                        {% endif %}
+                                        {%  if product.book_cover is not None and  product.book_cover != 'None' %}
+                                        <tr>
+                                            <td style ="color:black">Loại bìa</td>
+                                            <td>{{product.book_cover}}</td>
+                                        </tr>  
+                                        {% endif %}
+                                        {%  if product.numpage is not None and  product.numpage != 'None' %}
+                                        <tr>
+                                            <td style ="color:black">Số trang</td>
+                                            <td>{{product.numpage}}</td>
+                                        </tr>  
+                                        {% endif %}
+                                      
+                                    </table>
+                                                
+                               
+                               
+                            </div>
+                       
+                    </div>
+                  
+              
+                <div class="tab-pane fade" id="tab-pane-2">
+                        <div class="row">
+                            <div class="col-md-8" >
+                                <h6 class="mb-4">Đánh giá về sản phẩm "{{product.name}}"</h6>
+                                 <h6 class="my-3" style = "margin-left:20px;">
+                                    <span class="avg-rating">{{product.avg_rating}}</span>/5
+                                    <i class="fa fa-star text-warning"></i
+                                    ><small class="pt-1"> ({{product.count_review}} đánh giá )</small>
+                                </h6>
+                               <div class="col-md-12" style  =" width:auto;height: 400px;overflow: auto; border: None; ">
+                                {% for feedback in feedbacks %}
+                                <div class="media mb-4">
+                                {% load static %}
+
+                                    <img src="{% static 'images/user1.png' %}" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                                    <div class="media-body">
+                                     
+                                        <h6>{{feedback.id_customer.fullname}}</h6>
+                                         <p>{{feedback.create_at}}<p>
+                                        <div class=" mb-2" style = "color:#FFFF00;">
+                                            {% if feedback.rating == 1 %}
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            {% endif %}
+                                                
+                                            {% if feedback.rating == 2 %}
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            {% endif %}
+                                            {% if feedback.rating == 3 %}
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            {% endif %}
+                                            {% if feedback.rating == 4 %}
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            {% endif %}
+                                            {% if feedback.rating == 5 %}
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            {% endif %}
+                                           
+                                        </div>
+                                        {% if feedback.content is not None%}
+                                            <p>{{feedback.content}}</p>
+                                        {% endif %}
+                                        
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                 </div>
+                            </div>
+                            <div class="col-md-4", style = "background-color:#EDF1FF; padding:20px 20px 20px 50px;border-radius: 15px"> 
+                                     {% include "alerts.html" %}
+                                    <form action="{% url 'productdetail' product.slug %}" method="POST">
+                                        {% csrf_token %}
+                                        <h5><img class="icon" src="{% static 'images/rate.png' %}" style = "width:80px;margin-right:10px">Đánh giá sản phẩm</h5>
+                                        <div>
+                                        
+                                            <label style = "color:black">Số sao cho sản sảm phẩm</label>
+                                            <br>
+                                            <div class="rate">
+                                                        <input type="radio" id="star5" name="rating" value="5" />
+                                                        <label for="star5" title="text">5 stars</label>
+                                                        <input type="radio" id="star4" name="rating" value="4" />
+                                                        <label for="star4" title="text">4 stars</label>
+                                                        <input type="radio" id="star3" name="rating" value="3" />
+                                                        <label for="star3" title="text">3 stars</label>
+                                                        <input type="radio" id="star2" name="rating" value="2" />
+                                                        <label for="star2" title="text">2 stars</label>
+                                                        <input type="radio" id="star1" name="rating" value="1" />
+                                                        <label for="star1" title="text">1 star</label>
+                                                    </div>
+                                            <br>
+                                            <br>
+                                          
+                                            <label style = "color:black">Nội dung</label>
+                                            <textarea name="content" rows="4" class="form-control"></textarea>
+                                            <br>
+                                            <div style = " text-align: center ">
+                                                {% if is_rated is True  %}
+                                                  
+                                                    <input type="submit" value="Gửi" class="btn btn-info" style = 'border-radius: 7px'>
+                                                    
+                                                {% else %}
+                                              
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                     </form>
+                              
+                               
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid pt-5" style = 'background-color:#EDF1FF;margin-top:20px;'>
+ 
+        <div style= 'padding-bottom:10px; padding-left:50px'>
+            {% if rated == True %}
+                <p class="font-weight-semi-bold text-uppercase mb-3" style = "color:black;font-size:20px"> <img class="icon" src="{% static 'images/reward.png' %}" style = "width:40px;margin-right:10px">Có thể bạn thích</p>
+            {% else %}
+                <p class="font-weight-semi-bold text-uppercase mb-3" style = "color:black;font-size:20px"> <img class="icon" src="{% static 'images/increase.png' %}" style = "width:30px;margin-right:10px">Sách nổi bật</p>
+            {% endif %}
+        </div>
+    <div class="row px-xl-5 pb-3">
+      {% for p in product_r %}
+      <div class="col-lg-2 col-md-6 col-sm-12 pb-1">
+        <div class="card product-item border-0 mb-4">
+          <div
+            class="card-header product-img position-relative overflow-hidden bg-transparent border p-0"
+          >
+            <img
+              src="{{p.image.url}}"
+              alt=""
+              class="img-fluid w-100"
+              style="height: 250px; object-fit: contain"
+            />
+          </div>
+          <div
+            class="card-body border-left border-right text-center p-0 pt-4 pb-3"
+          >
+            <h6 class="text-truncate mb-3" style="">
+              <a href="{% url 'productdetail' p.slug %}" style="color: #2e2178">{{p.name}}</a>
+            </h6>
+            <h6 class="my-3">
+              <span class="avg-rating">{{p.avg_rating}}</span>/5
+              <i class="fa fa-star text-warning"></i
+              ><small class="pt-1"> ({{p.count_review}} đánh giá )</small>
+            </h6>
+            <div class="d-flex justify-content-center">
+              <h6>Giá: <b>{{p.price|intcomma}} VND </b></h6>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+    
+{% endblock %}

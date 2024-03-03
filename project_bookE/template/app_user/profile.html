@@ -1,0 +1,20 @@
+{% extends 'base_profile.html' %}  
+{% block title %}Thông tin tài khoản{%endblock %} 
+{% block content1 %}
+     <div class="container-fluid  mt-100" style = 'padding-top:100px'>
+			<div class="row">
+				 <div class="col-md-12">
+					<div class="card-body cart">
+                        <div class="col-sm-12 empty-cart-cls text-center">
+                            {% load static %}
+                            <img src="{% static 'images/user1.png' %}" width="100" height="100" class="img-fluid mb-4 mr-3">
+                            <h3><strong>Xin chào {{user.fullname}}</strong></h3>
+                            <h4>Đây là trang thông tin tài khoản của bạn</h4>
+                            <a href="{% url 'home'  %}" class="btn btn-success cart-btn-transform m-3" data-abc="true" style="border-radius: 7px;">Trang chủ</a>
+                        </div>
+                    </div>
+				</div>
+			</div>
+		</div>
+{% endblock %}
+7

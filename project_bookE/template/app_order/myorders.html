@@ -1,0 +1,62 @@
+{% extends 'base_profile.html' %}  
+ {% load static %}
+{% load humanize %} 
+{% block title %}Đơn hàng của tôi{%endblock %} 
+{% block content1 %}
+    <div class="col-md-12 table-responsive mb-5" >
+            {% if orders is None%}
+                    <div class="container-fluid  mt-100" style = "padding-top: 100px">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card-body cart">
+                                    <div class="col-sm-12 empty-cart-cls text-center">
+                                        {% load static %}
+                                        <img src="{% static 'images/order1.png' %}" width="100" height="100" class="img-fluid mb-4 mr-3">
+                                        <h3><strong>Bạn chưa có đơn hàng nào</strong></h3>
+                                        <h4>Hãy tới của hàng để mua sắm </h4>
+                                        <a href="{% url 'home'  %}" class="btn btn-success cart-btn-transform m-3" data-abc="true" style="border-radius: 7px;">Trang chủ</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            {% else%}
+            <div style = "text-align:center;">
+            <h3 class="font-weight-semi-bold text-uppercase mb-3">Lịch sử đơn hàng</h3>
+            </div>
+            {% comment %} <form class="form-inline my-2 my-lg-0" action="" method="GET">
+                <button class="btn my-2 my-sm-0" type="submit" style="background-color: #cce6ff">Tìm kiếm</button>
+                <input name="keyword" class="form-control mr-sm-2" type="search" placeholder="Search"
+                    aria-label="Search" required>
+            </form> {% endcomment %}
+            <hr>
+            <table class="table">
+                <thead>
+                    <tr style = 'color:black; text-align: center;'>
+                        <th>STT</th>
+                        <th>ID</th>
+                        <th>Số tiền</th>
+                        <th>Ngày đặt hàng</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ord in orders %}
+                    <tr style = 'color:black; text-align: center;'>
+                        <td>{{forloop.counter}}</td>
+                        <td><a href="{% url 'customerorderdetail' ord.pk %}" style = "color:blue"> #ORDER_{{ord.id}}</a></td>
+                        <td>{{ord.paymentid.amount |intcomma}}</td>
+                        <td>{{ord.time}}</td>
+                        {% if ord.status == 'Order Received' %}
+                            <td>Chờ xác nhận</td>
+                        {% else %}
+                            <td>{{ord.status}}</td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}

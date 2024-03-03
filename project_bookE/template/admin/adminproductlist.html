@@ -1,0 +1,139 @@
+{% extends 'admin/admin_base.html' %}
+ {% load humanize %} 
+
+{% block content %}
+    <div class="container" style="padding-top: 100px"> 
+      <div class="row">
+        <div class="col-md-12">
+            <h3>Danh sách sản phẩm</h3><hr>
+         
+                <div class = "row">
+                    <div class = "col-10" style = "display: inline;">
+                      <form class="form-inline " action="{% url 'adminproductlist' %}"  method="GET">
+                          <div class="input-group" style = "margin-top:50px;">
+                            <input type="text" name="keyword" class="form-control" placeholder="Tìm kiếm sách" style = 'border-color: #000000;'/>
+                            <div class="input-group-append">
+                              <span class="input-group-text bg-transparent text-primary">
+                             <button class="btn btn-secondary" type="submit">Tìm kiếm</button> 
+                            </div>
+                          </div>
+                      </form>
+                      </div>
+                      <div class = "col-2" >
+                          <div style = "margin-top:50px;">
+                            <nav class="navbar navbar-expand-lg navbar-light">
+                           
+                            <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+                              <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+                              
+                                <li class="nav-item dropdown">
+                                  <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                   <h5 class = "btn btn-success">Thêm sách </h5>
+                                  </a>
+                                  <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
+                                    <div class="message-body">
+                                    {% for c in allcategory %}
+                                      <a class="d-flex align-items-center gap-2 dropdown-item" href="{% url 'adminproductcreate' c.id %}" style = "margin-right: 5px; float: right;" role="button">{{c.category_name}}</a>
+                                    {% endfor %}
+                                    </div>
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          </nav>
+                        
+                        </div>
+                    </div>
+                    <div class = "row table-responsive mb-5" style="margin-top: 5px;">
+                    <table class="table">
+                        <thead style="background-color: white; font-size: 17px;  align-content: center">
+                            <tr style = 'color:black; text-align: center;'>
+                                <th class = "align-middle col-1" scope="col">STT</th>
+                                <th class = "align-middle col-1" scope="col">Mã sách</th>
+                                <th class = "align-middle col-2"  scope="col">Ảnh</th>
+                                <th class = "align-middle col-3"  scope="col">Tên sách</th>
+                                <th class = "align-middle col-3"  scope="col">Giá bán</th>
+                                <th class = "align-middle col-2"  scope="col">Tác giả</th>
+                                <th class = "align-middle col-1"  scope="col">Danh mục</th>
+                                <th class = "align-middle col-1"  scope="col">Số lượng</th>
+                                <th class = "align-middle col-1"  scope="col">Đăng tải</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in allproducts %}
+                            <tr style = "font-size: 17px; color: black; text-align: center;">
+                                <td class="align-middle" scope="row">{{forloop.counter}}</td>
+                                <td class="align-middle">{{p.id}}</td>
+                                <td class="align-middle"> <img src="{{p.image.url}}"alt="" class="img-fluid w-100" style="height: 250px; object-fit: contain"/></td>
+                                <td class="align-middle" ><a href="{% url 'adminproductdetail' p.id %}" style = "color: blue">{{p.name}}</a></td>
+                                <td class="align-middle">{{p.price|intcomma}} đồng</td>
+                                <td class="align-middle">{{p.author}}</td>
+                                <td class="align-middle">{{p.id_category.category_name}}</td>
+                                <td class="align-middle">{{p.stock}}</td>
+                                <td class="align-middle">{{p.is_upload}}</td>
+                                <td class="align-middle"><a class="btn btn-danger" href="{% url 'adminproductdelete' p.id %}">Xóa</a></td>
+                                {% if p.stock is  None or p.stock == 0 %}
+                                   <td class="align-middle"><a class="btn btn-primary" href="{% url 'adminimport' p.slug %}">Nhập</a></td>
+                                   
+                                {%  else %} 
+                                    <td class="align-middle"><a class="btn btn-success" href="">Has</a></td>
+                                  
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12 pb-1">
+      <nav aria-label="Page navigation" >
+      <ul class="pagination justify-content-center mb-3">
+        {% if allproducts.has_previous %}
+        <li class="page-item" >
+          <a
+            class="page-link"
+            href="?page={{ allproducts.previous_page_number }}"  style ="color: black"
+            >Trước</a
+          >
+        </li>
+        {% else %}
+        <li class="page-item disabled" >
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true" 
+            >Trước</a
+          >
+        </li>
+        {% endif %} 
+       {% for i in allproducts.paginator.page_range %} 
+        {% if i >= allproducts.number|add:"-3"  and i <= allproducts.number|add:"3"  %} 
+          {% if i == allproducts.number %}
+            <li class="page-item active"><a class="page-link" style ="color: black; background-color: #6F8FAF">{{i}}</a></li>
+            {% else %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{i}}" style ="color: black">{{i}}</a>
+            </li>
+            {% endif %} 
+          {% endif %} 
+        {% endfor %} 
+        {% if allproducts.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{allproducts.next_page_number }}" style ="color: black"
+            >Sau</a
+          >
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true" style ="color: black">Sau</a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+ 
+    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}
+
+
+ 

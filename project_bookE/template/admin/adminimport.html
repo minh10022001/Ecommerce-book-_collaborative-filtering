@@ -1,0 +1,85 @@
+{% extends 'admin/admin_base.html' %}
+ {% load humanize %} 
+
+{% block content %}
+<div class="container" style = 'padding:25px'> 
+        <div style="text-align: center">
+           <h3> Nhập hàng</h3>
+        </div>
+      <div class="row">
+            <table class="table table-hover">
+                        <thead style="background-color: white; font-size: 17px;  align-content: center">
+                            <tr>
+                              
+                                <th class = "align-middle col-1" scope="col">Mã sách</th>
+                                <th class = "align-middle col-2"  scope="col">Ảnh</th>
+                                <th class = "align-middle col-3"  scope="col">Tên sách</th>
+                                <th class = "align-middle col-3"  scope="col">Giá bán</th>
+                                <th class = "align-middle col-2"  scope="col">Tác giả</th>
+                                <th class = "align-middle col-1"  scope="col">Danh mục</th>
+                                <th class = "align-middle col-1"  scope="col">Số lượng</th>
+                                <th class = "align-middle col-1"  scope="col">Đăng tải</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                        
+                            <tr style = "font-size: 17px; color: black">
+                              
+                                <td class="align-middle">{{product.id}}</td>
+                                <td class="align-middle"> <img src="{{product.image.url}}"alt="" class="img-fluid w-100" style="height: 250px; object-fit: contain"/></td>
+                                <td class="align-middle" ><a href="{% url 'adminproductdetail' product.id %}">{{product.name}}</a></td>
+                                <td class="align-middle">{{product.price|intcomma}} đồng</td>
+                                <td class="align-middle">{{product.author}}</td>
+                                <td class="align-middle">{{product.id_category.category_name}}</td>
+                                <td class="align-middle">{{product.stock}}</td>
+                                <td class="align-middle">{{product.is_upload}}</td>
+                             
+                            </tr>
+                          
+                        </tbody>
+                    </table>
+        </div>
+          
+     <div class="row">
+      <form action="" method="POST">
+        {% csrf_token %}
+
+       
+          <div class="row">
+              <div class = "col-4" style = "display: inline;">
+              <label style = "margin-right:10px; color: black; fon-size:20px">Gía nhập</label>
+              {{ form.price_import }}
+            </div>
+
+            <div class = "col-4" style = "display: inline;">
+              <label style = "margin-right:10px; color: black; fon-size:20px">Gía bán</label>
+
+              {{ form.price_sale }}
+            </div>
+
+            <div class = "col-4" style = "display: inline;">
+              <label style = "margin-right:10px; color: black; fon-size:20px">Số lượng</label>
+              {{ form.num }}
+            </div>
+        <div>
+           
+
+          <div style="text-align: center">
+            <button
+              class="btn btn-block btn-info "
+              style="font-size: 20px; border-radius: 10px; margin: 20px"
+            >
+              Nhập hàng
+            </button>
+             </div>
+       
+      </form>
+
+    
+</div>
+
+       
+
+</div>
+{% endblock %}

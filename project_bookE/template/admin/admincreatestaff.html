@@ -1,0 +1,74 @@
+{% extends 'admin/admin_base.html' %}
+ {% load humanize %} 
+ {% load static %}
+{% block content %}
+
+<section class="section-conten padding-y" style="min-height: 84vh ;padding-top:50px;background-color:#C1E8E4; padding-bottom:2%;">
+
+  <div class="card mx-auto" style="max-width: 500px; margin-top: 50px; border-radius: 10px;  border-style: solid;
+  border-color: coral;">
+    <div class="card-body">
+      <h4 class="card-title mb-4"  style = " font-weight: bold;">Tạo tài khoản cho nhân viên</h4>
+     
+      <form action="{% url 'admincreatestaff' %}" method="POST" style = "color:black; border-color: #000000;">
+        {% csrf_token %}
+        <div class="form-row">
+          <div class="col form-group">
+            <label  style = " font-weight: bold;padding-bottom:7px padding-bottom:7px">Họ tên</label>
+            {{ form.fullname }}
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label  style = " font-weight: bold;padding-bottom:7px">Email</label>
+            {{ form.email }}
+          </div>
+
+          <div class="form-group col-md-12">
+            <label  style = " font-weight: bold;padding-bottom:7px">Số điện thoại</label>
+            {{ form.phone_number }}
+          </div>
+        </div>
+           <div class="form-row">
+          <div class="form-group col-md-12">
+            <label  style = " font-weight: bold;padding-bottom:7px">Vị trí</label>
+            {{ form.position }}
+          </div>
+
+          <div class="form-group col-md-12">
+            <label  style = " font-weight: bold;padding-bottom:7px">Lương</label>
+            {{ form.salary }}
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label  style = " font-weight: bold;padding-bottom:7px">Mật khẩu</label>
+            {{ form.password }}
+          </div>
+
+          <div class="form-group col-md-12">
+            <label  style = " font-weight: bold;padding-bottom:7px">Xác nhận mật khẩu</label>
+            {{ form.confirm_password }}
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label  style = " font-weight: bold;padding-bottom:7px">Ghi chú</label>
+            {{ form.note }}
+        
+          </div>
+        </div>
+     
+        <div style="text-align:center; padding-top:20px;">
+          <button type="submit" class="btn btn-info " style = "border-radius: 10px;font-weight: bold; ">Tạo</button>
+        </div>
+
+        {{ form.email.errors }} {{ form.non_field_errors }}
+      </form>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

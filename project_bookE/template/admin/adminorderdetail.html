@@ -1,0 +1,104 @@
+{% extends 'admin/admin_base.html' %}
+ {% load humanize %} 
+
+{% block content %}
+<div class="container-fluid bg-secondary mb-5">
+  <div
+    class="d-flex flex-column align-items-center justify-content-center"
+    style="min-height: 100px"
+  >
+    <h1
+      class="font-weight-semi-bold text-uppercase mb-3"
+      style="font-size: 25px"
+    >
+    Đơn hàng
+    </h1>
+  </div>
+</div>
+<div class="container-fluid" style = "padding-left:2%; padding-right: 2%">
+  <div class="row">
+    <div class="col-md-3" style = "text-align: left">
+        <h3>Chi tiết đơn hàng</h3>
+        <hr>
+        <p style = "color:black"><span class="font-weight-bold"><b> ID: </b></span> #ORDER_{{ord_obj.id}}</p>
+         {% if ord_obj.status == 'Order Received' %}
+              <p style = "color:black"><span class="font-weight-bold"><b>Trạng thái: </b></span>Chờ xác nhận</p>
+        {% else %}
+              <p style = "color:black"><span class="font-weight-bold"><b>Trạng thái: </b></span> {{ord_obj.status}}</p>
+        {% endif %}
+      
+        <p style = "color:black"><span class="font-weight-bold" ><b>Ngày đặt hàng: </b></span>
+            {{ord_obj.time}}</p>
+        <p style = "color:black"><span class="font-weight-bold"><b>Thông tin khách hàng: </b></span>  {{ord_obj.customerid.fullname}},
+            {{ord_obj.customerid.phone_number}}</p>
+        <p style = "color:black"><span class="font-weight-bold"><b>Người nhận hàng: </b></span>
+            {{ord_obj.shippingid.address.name_receiver}}</p>
+        <p style = "color:black"><span class="font-weight-bold"><b>Địa chỉ giao hàng: </b></span>  {{ord_obj.shippingid.address}}
+            (SĐT : {{ord_obj.shippingid.address.receiver_phone}})</p>
+        <p  style = 'color:black'><span class="font-weight-bold"><b>Hình thức vận chuyển:</b> </span>
+        {{ord_obj.shippingid.method}}</p>
+         <p  style = 'color:black'><span class="font-weight-bold"><b>Ngày nhận hàng dự kiến:</b> </span>
+        {{ord_obj.shippingid.date_shipping}}</p>
+         <p  style = 'color:black'><span class="font-weight-bold"><b>Hình thức thanh toán:</b> </span>
+        {{ord_obj.paymentid.method}}</p>
+      
+    </div>
+    <div class="col-md-9 table-responsive">
+        <h4>Mặt hàng đã đặt</h4>
+                <table class="table">
+                    <thead>
+                        <tr style = "color:black;">
+                            <th>STT</th>
+                            <th>ẢNH</th>
+                            <th>Mặt hàng</th>
+                            <th>Giá tiền</th>
+                            <th>Số lượng</th>
+                            <th style = "width: 150px;">Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       
+                        {% for ori in ord_obj.orderitem_set.all %}
+                        <tr style = "color:black;">
+                            <td>{{forloop.counter}}</td>
+                            <td class="align-middle"><img src={{ori.product.image.url}} alt="" style="width: 90px;"></td>
+                            <td><a target="_blank" style = "color: black"
+                                    href="{% url 'productdetail' ori.product.slug %}">{{ori.product.name}}({{ori.product.id}})</a>
+                            </td>
+                            <td>{{ori.exact_price}}</td>
+                            <td>{{ori.count}}</td>
+                            <td>{{ori.subTotal}}</td>
+                        </tr>
+                        {% endfor %}
+                       
+                        <tr style = "color:black;">
+                            <th colspan="5" class="text-right">Tạm tính: </th>
+                            <th>{{ord_obj.cost_all_items|intcomma}} VNĐ</th>
+                        </tr>
+                        <tr style = "color:black;">
+                            <th colspan="5" class="text-right">Tiền vận chuyển: </th>
+                            <th>{{ord_obj.shippingid.price_shipping|intcomma}} VNĐ</th>
+                        </tr>
+                        <tr style = "color:black;">
+                            <th colspan="5" class="text-right">Tổng tiền: </th>
+                            <th>{{ord_obj.paymentid.amount|intcomma}} VNĐ</th>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style  = 'padding: 20px; text-align: center; border-color: black;'>
+                    <form action="{% url 'adminorderstatuschange' ord_obj.id %}" method="POST">
+                        {% csrf_token %}
+                        <select name="status" class = 'form-control' style = 'border-color: #000000;'>
+                            {% for i, j in allstatus %}
+                            <option value="{{i}}" {% if i == ord_obj.status %}selected{% endif %}>{{j}}</option>
+                            {% endfor %}
+                        </select>
+                        <br>
+                        <button class="btn btn-info">Lưu</button>
+                        
+                    </form>
+                </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

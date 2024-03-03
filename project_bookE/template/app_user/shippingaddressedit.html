@@ -1,0 +1,61 @@
+
+
+{% extends 'base_profile.html' %} 
+{% block title %}Sửa sổ địa chỉ{%endblock%} 
+{% block content1 %}
+
+
+<section class="section-conten padding-y" style="min-height:84vh; background-color: white;padding-top:50px">
+  
+  <div class="card mx-auto" style="max-width: auto; margin-top:20px">
+      <div class="card-body">
+          <h4 class="card-title mb-4" style = " font-weight: bold;">Chỉnh sửa sổ địa chỉ</h4>
+            {% include "alerts.html" %}
+          <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+             <div class="mb-4">
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label>Người nhận</label>
+              {{ form.name_receiver }}
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label>Số điện thoại</label>
+
+              {{ form.receiver_phone }}
+            </div>
+            <div class="col-md-6 form-group">
+              <label>Tỉnh/Thành phố</label>
+              {{ form.city }}
+            </div>
+            <div class="col-md-6 form-group">
+              <label>Quận/ Huyện</label>
+              {{ form.district }}
+            </div>
+            <div class="col-md-6 form-group">
+              <label>Phường xã</label>
+              {{ form.ward }}
+            </div>
+            <div class="col-md-6 form-group">
+              <label>Số nhà/Ngõ/Ngách</label>
+               {{ form.address_detail }}
+            
+            </div>
+
+          </div>
+          <br>
+            <div style="text-align:center;">
+              <button class="btn btn-info" style = "border-radius:7px">Cập Nhật</button>
+            </div>
+          </form>
+          
+        
+      </div> 
+  </div> 
+  
+
+</section>
+{% endblock %}
+
+

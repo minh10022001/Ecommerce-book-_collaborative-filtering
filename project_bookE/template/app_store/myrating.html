@@ -1,0 +1,57 @@
+{% extends 'base_profile.html' %}  
+ {% load static %}
+{% load humanize %} 
+{% block title %}Đánh giá của tôi{%endblock %} 
+{% block content1 %}
+    {% if rating is None %}
+         <div class="container-fluid  mt-100" style = 'padding-top:100px'>
+			<div class="row">
+				 <div class="col-md-12">
+					<div class="card-body cart">
+                        <div class="col-sm-12 empty-cart-cls text-center">
+                            {% load static %}
+                            <img src="{% static 'images/rate.png' %}" width="100" height="100" class="img-fluid mb-4 mr-3">
+                            <h3><strong>Bạn chưa đánh giá sản phẩm nào</strong></h3>
+                            <h4>Hãy tới của hàng </h4>
+                            <a href="{% url 'home'  %}" class="btn btn-success cart-btn-transform m-3" data-abc="true" style="border-radius: 7px;">Trang chủ</a>
+                        </div>
+                    </div>
+				</div>
+			</div>
+		</div>
+    {% else %}
+        <div class="col-md-12 table-responsive mb-5">
+                <div style = "text-align:center;">
+                <h3>Đánh giá của tôi</h3>
+                </div>
+            
+                <hr>
+                <table class="table">
+                    <thead>
+                        <tr style = 'color:black; text-align: center;'>
+                            <th>STT</th>
+                            <th>Tên sản phẩm </th>
+                            <th>Ảnh</th>
+                            <th>Thời gian đánh giá</th>
+                            <th>Số sao</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rate in rating %}
+                        <tr style = 'color:black; text-align: center;'>
+                            <td>{{forloop.counter}}</td>
+                            <td><a href="{% url 'productdetail' rate.id_product.slug %}" style = "color:blue"> {{rate.id_product.name}}</a></td>
+                            <td><img src="{{rate.id_product.image.url}}"alt="" class="img-fluid w-100" style="height: 250px; object-fit: contain"/></td>
+                            <td>{{rate.create_at}}</td>
+                            <td>{{rate.rating}} <i class="fa fa-star text-warning"></i></td>
+                        
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+
+
+{% endblock %}

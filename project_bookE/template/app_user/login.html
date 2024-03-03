@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %} 
+{% block title %}Đăng nhập{%endblock %} 
+
+
+{% block content %}
+
+<section class="section-conten padding-y" style="min-height:84vh; background-image: url({% static 'images/bg2.jpg' %});background-size:cover;padding-top:50px;margin-top:15px">
+  
+    <div class="card mx-auto" style="max-width: 300px; margin-top:20px;border-radius: 10px;  border-style: solid;
+    border-color: coral;">
+        <div class="card-body">
+            <h4 class="card-title mb-4" style = " font-weight: bold;">Đăng nhập</h4>
+              {% include "alerts.html" %}
+            <form action="{% url 'login' %}" method="POST">
+              {% csrf_token %}
+             
+              <div class="form-group">
+                <input type="email" class="form-control" placeholder="Email" name="email" value="{{ email }}" />
+              </div> <!-- form-group// -->
+              <div class="form-group">
+                <input type="password" class="form-control" placeholder="Mật khẩu" name="password" value="{{ password }}" />
+              </div> <!-- form-group// -->
+              <div style="text-align:center;">
+                <button type="submit" class="btn btn-info " style = "border-radius: 10px">Đăng nhập</button>
+              </div>
+            </form>
+        </div> <!-- card-body.// -->
+    </div> <!-- card .// -->
+    <p class="text-center mt-4" >Bạn chưa có tài khoản? <a href="{% url 'register' %}" style = "color:#00CED1;  font-weight: bold;">Đăng ký</a></p>
+    <br><br>
+
+</section>
+
+{% endblock %}

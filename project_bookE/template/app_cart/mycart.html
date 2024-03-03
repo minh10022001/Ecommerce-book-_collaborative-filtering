@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block title %} Giỏ hàng{% endblock %}
+
+{% block content %}
+
+        {% if count_cart == 0 %}
+              <div class="container-fluid  mt-100" style = 'padding-top:100px; margin-bottom:5%'>
+				 <div class="row">
+				 
+					<div class="col-md-12">
+					
+						<div class="card-body cart">
+								<div class="col-sm-12 empty-cart-cls text-center">
+                                   {% load static %}
+									<img src="{% static 'images/cart1.png' %}" width="100" height="100" class="img-fluid mb-4 mr-3">
+									<h3><strong>Giỏ hàng hiện tại đang trống</strong></h3>
+									<h4>Hãy tiếp tục mua sắm</h4>
+									<a href="{% url 'home'  %}" class="btn btn-success cart-btn-transform m-3" data-abc="true" style="border-radius: 7px;">Trang chủ</a>
+						</div>
+				</div>
+						
+					
+					</div>
+				 
+				 </div>
+				
+				</div>
+          {% else %}
+              <div class="container-fluid bg-secondary mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+            <h3 class="font-weight-semi-bold text-uppercase mb-3"  style="font-size: 25px; color:#002D62"> <img class="icon" src="{% static 'images/cart3.png' %}" style = "width:50px;margin-right:15px">Giỏ hàng</h3>
+            <div class="d-inline-flex">
+               
+           
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid pt-5">
+        <div class="row px-xl-5">
+            <div class="col-lg-9 table-responsive mb-5">
+                <table class="table table-bordered text-center mb-0">
+                    <thead class="bg-secondary text-dark">
+                        <tr>
+                            <th>Stt</th>
+                            <th>Ảnh</th>
+                            <th>Sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Thành tiền</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="align-middle">
+                        {% for cp in cartline %}
+                            <tr>
+                                <td class="align-middle">{{forloop.counter}}</td>
+                                <td class="align-middle"><img src={{cp.id_product.image.url}} alt="" style="width: 150px;"></td>
+                                <td class="align-middle">{{cp.id_product.name}}</td>
+                                <td class="align-middle">{{cp.id_product.price|intcomma}} VND</td>
+                                <td class="align-middle">{{cp.num}}</td>
+                                <td class="align-middle">{{cp.sumPrice}}</td>
+                                <td class="align-middle" style = "width:150px;">
+                                    <a href="{% url 'managecart' cp.id %}?action=inc" class="btn btn-info "style="border-radius: 7px;" > + </a>
+                                    <a href="{% url 'managecart' cp.id %}?action=dcr" class="btn btn-warning" style="border-radius: 7px;"> - </a>
+                                    <a href="{% url 'managecart' cp.id %}?action=rmv" class="btn btn-danger" style="border-radius: 7px;"> x </a>
+                                </td>
+                            </tr>
+                                           
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-3">
+              
+                <div class="card border-secondary mb-5">
+                    <div class="card-header bg-secondary border-0">
+                        <h4 class="font-weight-semi-bold m-0">Thanh toán</h4>
+                    </div>
+                    <div class="card-body">
+
+                    </div>
+                    <div class="card-footer border-secondary bg-transparent">
+                        <div class="d-flex justify-content-between mt-2">
+                            <h5 class="font-weight-bold">Tạm tính</h5>
+                            <h5 class="font-weight-bold">{{cart.total|intcomma}} VND</h5>
+                        </div>
+                        {% if cart.cartline_set.all %}
+                            <a class="btn btn-block btn-info my-3 py-3" href="{% url 'checkout' %}" style="border-radius: 10px;"> Thanh toán </a>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer border-secondary bg-transparent">
+                        {% if cart.cartline_set.all %}
+                            <th><a href="{% url 'emptycart' %}" style = "color:blue">Xoá hết sản phẩm trong giỏ</a></th>
+                        {% endif %}
+                    </div>
+                </div>
+            </div> 
+        </div>
+      
+          </div>
+        {% endif %}
+   
+
+{% endblock %}

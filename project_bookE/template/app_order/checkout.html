@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% block title %}Đặt hàng {% endblock %}
+{% load humanize %}
+{% load static %}
+{% block content %}
+<div class="container-fluid bg-secondary mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+            <h3 class="font-weight-semi-bold text-uppercase mb-3"  style="font-size: 25px; color:#002D62"> <img class="icon" src="{% static 'images/order1.png' %}" style = "width:50px;margin-right:15px">Đặt hàng</h3>
+            <div class="d-inline-flex">
+               
+            </div>
+        </div>
+</div>
+{% if count_cart > 0 %}
+<div class="container-fluid " >
+          {% comment %} <div style ="text-align: center;">
+                <h3>Danh sách sản phẩm trong giỏ hàng</h3>
+                </div> {% endcomment %}
+        <br>
+        <div class="row px-xl-5" style = "background-color: white; padding: 5px">
+             
+            <div class="col-lg-8 table-responsive mb-5">
+                
+                <table class="table table-bordered text-center mb-0" >
+                    <thead class="bg-secondary text-dark">
+                        <tr >
+                            <th>Stt</th>
+                            <th>Ảnh</th>
+                            <th>Sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th style = 'width: 150px;'>Thành tiền</th>
+                         
+                        </tr>
+                    </thead>
+                    <tbody class="align-middle">
+                            
+                              {% for cp in cart.cartline_set.all %}
+                              {%if cp.is_active == True %}
+                              <tr style="font-size: 17px; color:#002D62">
+                                <td>{{forloop.counter}}</td>
+                                <td><img src={{cp.id_product.image.url}} alt="" style="width: 50px;"></td>
+                                <td><a target="_blank"
+                                href="{% url 'productdetail' cp.id_product.slug %}" style="font-size: 17px; color:#002D62">{{cp.id_product.name}}</a></td>
+                                <td >{{cp.id_product.price|intcomma}}</td>
+                                <td>{{cp.num}}</td>
+                                <td>{{cp.sumPrice|intcomma}}</td>
+                            </tr>
+                               {% endif %}
+                        {% endfor %}
+                           <tr style="font-size: 17px; color:black" >
+                        <th colspan="5" class="text-right">Tổng tiền mặt hàng</th>
+                        <th class="text-left">{{cart.total|intcomma}} VND</th>
+                    </tr>
+                    <tr style="font-size: 17px; color:black" >
+                        <th colspan="5" class="text-right">Phí vận chuyển</th>
+                        
+                        <th class="text-left"> <span id = "result" >0</span> VND</th>
+                    </tr>
+                    <tr style="font-size: 17px; color:black" >
+                        <th colspan="5" class="text-right">Tổng tiền</th>
+                        
+                        <th class="text-left"> <span id = "total"> {{cart.total|intcomma}}</span> VND</th>
+                        
+                    </tr>
+                 
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-4">
+              
+                <div class="card border-secondary mb-5">
+                    <div class="card-header bg-secondary border-0">
+                        <h4 class="font-weight-semi-bold m-0">Thanh toán</h4>
+                    </div>
+                  
+                    <div class="card-footer border-secondary bg-transparent">
+                         <form action="" method="POST" style = "background-color: #f5f5f5;padding: 20px; border-radius: 15px;">
+                 {% csrf_token %} 
+            
+                <div class="form-group" style = "margin-right:20px;">
+                    <label style = "font-weight:bold">Địa chỉ nhận hàng</label>
+                    {{form.customershippingaddress}}
+                     <a  class = "btn btn-block btn-info " style = "border-radius:5px; color:black ; background-color:#C1E8E4; margin-top:10px"  href="{% url 'shippingaddresscreate' cart.customerid.id %}">Thêm địa chỉ mới</a>
+                </div>
+                <div class="form-group">
+                    <label style = "font-weight:bold">Phương thức thanh toán</label>
+                    <p>{{form.paymentMethod}}</p>
+                </div>
+                <div class="form-group" >
+                    <label style = "font-weight:bold">Hình thức vận chuyển</label>
+                    <p>{{form.shippingmethod}} </p>
+                    <div style = 'text-align: center;'>
+                    <input type="Button" id = "but1" style ="border-radius: 7px;margin-left: 0px;"value = "Áp dụng" onclick = "listbox();"/> 
+                    </div>
+                </div>
+              
+                <div style = "  text-align: center;">
+                <button class="btn btn-block btn-info my-3 py-3" style ="border-radius: 7px;">Xác nhận</button>
+                </div>
+            </form>
+                    </div>
+                    <div class="card-footer border-secondary bg-transparent">
+                        {% if cart.cartline_set.all %}
+                            <th> <a href="{% url 'mycart' %}" style = "color:blue">Cập nhật sản phẩm</a></th>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+        <div class="container-fluid  mt-100" style = 'padding-top:100px'>
+				 <div class="row">
+				 
+					<div class="col-md-12">
+					
+						<div class="card-body cart">
+								<div class="col-sm-12 empty-cart-cls text-center">
+                                   {% load static %}
+									<img src="{% static 'images/order.png' %}" width="100" height="100" class="img-fluid mb-4 mr-3">
+									<h3><strong>Không có sản phẩm nào chờ đặt hàng</strong></h3>
+									<h4>Hãy tiếp tục mua sắm</h4>
+									<a href="{% url 'home'  %}" class="btn btn-success cart-btn-transform m-3" data-abc="true" style="border-radius: 7px;">Trang chủ</a>
+						</div>
+				</div>
+    {% endif %}
+
+ <script>
+                function listbox()
+                {   
+                    var cost_item = {{cart.total}}
+                    if (cost_item > 500000){
+                        document.getElementById('result').innerHTML = 0  ;
+                        document.getElementById('result').style.color = "Gray";
+                        document.getElementById('total').innerHTML = cost_item ;
+                        document.getElementById('total').style.color = "Gray";
+                    }
+                    else
+                    {
+                        var spanresult = document.getElementById("result");
+                        spanresult.value = "";
+                        var x= document.getElementById('id_shippingmethod');
+                        for (var i = 0; i<x.options.length;i++)
+                        {
+                            if(x.options[i].selected == true)
+                            {
+                                spanresult.value += x.options[i].value+"" ;
+                                
+                            }
+                        }
+                        if(spanresult.value =="1"){
+                            document.getElementById('result').innerHTML =  10000.0 ;
+                            document.getElementById('result').style.color = "Gray";
+                            document.getElementById('total').innerHTML = cost_item + 10000.0  ;
+                            document.getElementById('total').style.color = "Gray";
+                        
+                        }
+                        else{
+                            document.getElementById('result').innerHTML = 20000.0  ;
+                            document.getElementById('result').style.color = "Gray";
+                            document.getElementById('total').innerHTML = cost_item + 20000.0 ;
+                            document.getElementById('total').style.color = "Gray";
+                        }
+                        if(document.getElementById("result").value == "")
+                        {
+                            document.getElementById('result').innerHTML = "hihi";
+                        }
+                    }
+                        
+                }
+            </script> 
+{% endblock %}

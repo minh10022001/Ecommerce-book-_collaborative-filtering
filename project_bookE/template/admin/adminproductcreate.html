@@ -1,0 +1,21 @@
+{% extends 'admin/admin_base.html' %}
+ {% load humanize %} 
+
+{% block content %}
+ <div class="container" style = "padding-top: 100px">
+        <div class="row">
+            <div class="col-md-10 mx-auto">
+                <h3><b> {{category.category_name}}</b></h3>
+                <hr>
+               
+                <form action="" method="POST" enctype="multipart/form-data" style = "color:black">
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <div style = "text-align: center; margin-bottom:5%">
+                    <button class="btn btn-info">Thêm sách</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

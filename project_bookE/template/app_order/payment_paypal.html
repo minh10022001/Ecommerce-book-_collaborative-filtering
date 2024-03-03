@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/book.png' %}" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/style.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/rating.css' %}"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Libraries Stylesheet -->
+    <link
+      href="{%static 'lib/owlcarousel/owl.carousel.js' %}"
+      rel="stylesheet"
+    />
+    <link
+      href="{%static 'lib/owlcarousel/owl.carousel.min.js' %}"
+      rel="stylesheet"
+    />
+    <style>
+      .material-icons {
+        position: relative;
+        vertical-align: middle;
+        left: 30px;
+      }
+      div.sticky {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+        background-color: yellow;
+      }
+    </style>
+  </head>
+
+  <body style="">
+  <section class="section-conten padding-y" style="min-height:84vh; background-image: url({% static 'images/bg2.jpg' %});background-size:cover;padding-top:50px;margin-top:15px">
+  
+    <div class="card mx-auto" style="max-width: 300px; margin-top:20px;border-radius: 10px;  border-style: solid;
+    border-color: coral;">
+        <div class="card-body">
+            <h4 class="card-title mb-4" style = " font-weight: bold;">Thanh toán Paypal</h4>
+    {% if messages %}
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+    {% endif %}
+    <div class="col-lg-12 table-responsive mb-12">
+                <table class="table table-bordered text-center mb-0">
+                    {% comment %} <thead class="bg-secondary text-dark">
+                        <tr>
+                            <th>Khách hàng</th>
+                            <th>Số tiền </th>
+                            <th>USD:</th>
+                           
+                        </tr>
+                    </thead> {% endcomment %}
+                    <tbody class="align-middle">
+                       
+                            <tr>
+                                <th class="align-middle">Khách hàng</th>
+                                <td class="align-middle">{{customer.fullname}}</td> 
+                            </tr>
+                             <tr>
+                                
+                                <th class="align-middle">Số tiền</th>
+                                {% load humanize %} 
+                                <td class="align-middle">{{amount|intcomma}} đ</td>
+                             
+                                
+                            </tr>
+                             <tr>
+                                
+                              
+                                <th class="align-middle">USD</th>
+                                <td class="align-middle">{{usd_amount}} $</td>
+                                
+                            </tr>
+                                           
+                        
+                    </tbody>
+                </table>
+            </div>
+    <div class="container-fluid  mb-5" style = 'text-align: center;magrin-top:10px;padding-top:10px'  >
+    
+                 {{ form.render}}
+
+                  <a class="btn btn-danger" style = 'border-radius:10px' href="{% url 'paypal-cancel' %}">Hủy thanh toán</a>
+                
+ 
+  
+  
+     </div> 
+    </div>
+  </body>
+</section>
+</html>

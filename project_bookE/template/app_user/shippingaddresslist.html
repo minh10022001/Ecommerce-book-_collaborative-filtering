@@ -1,0 +1,75 @@
+
+
+
+{% extends 'base_profile.html' %}
+
+{% block title %}Sổ địa chỉ{% endblock %}
+
+{% block content1 %}
+
+  {% if shippingaddresslist is None %}
+     <div class="container-fluid  mt-100" style = 'padding-top:100px'>
+			<div class="row">
+				 <div class="col-md-12">
+					<div class="card-body cart">
+                        <div class="col-sm-12 empty-cart-cls text-center">
+                            {% load static %}
+                            <img src="{% static 'images/placeholder.png' %}" width="100" height="100" class="img-fluid mb-4 mr-3">
+                            <h3><strong>Bạn chưa tạo địa chỉ </strong></h3>
+                            <h4>Hãy tạp địa chỉ nhận hàng</h4>
+                            <a href="{% url 'shippingaddresscreate' account.id %}" class="btn btn-success cart-btn-transform m-3" data-abc="true" style="border-radius: 7px;">Thêm địa chỉ</a>
+                        </div>
+                    </div>
+				</div>
+			</div>
+		</div>
+  {% else %}
+  <div class="container-fluid bg-secondary mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+            <h1 class="font-weight-semi-bold text-uppercase mb-3" style = "font-size: 25px"></h1>
+            <h1 class="font-weight-semi-bold text-uppercase mb-3" style = "font-size: 25px">Sổ Địa Chỉ Của Tôi</h1>
+        </div>
+</div>
+<div class="container" >
+    <div class="row">
+        <div class="col-md-12" >
+            {% comment %} <h3>Sổ Địa Chỉ Của Tôi</h3> {% endcomment %}
+            <hr>
+            <a  class = "btn btn-block btn-info my-1 py-3" style = "border-radius:5px; color:black ; background-color:#C1E8E4"  href="{% url 'shippingaddresscreate' account.id %}">Thêm địa chỉ mới</a>
+          
+            <table class="table table-responsive mb-5">
+              <thead>
+                <tr style = 'color:black;text-align: center;'>
+                  <th>STT</th>
+                  <th>ID</th>
+                  <th>Tên người nhận</th>
+                  <th>Số điện thoại</th>
+                  <th>Địa Chỉ</th>
+            
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for shippingaddress in shippingaddresslist %}
+                  <tr style = 'color:black; text-align: center;' >
+                    <td>{{ forloop.counter }}</td>
+                    <td>
+                      <a href="{% url 'shippingaddressedit' account.id shippingaddress.id %}" style = "color:blue">#ADDRESS_{{ shippingaddress.id }}</a>
+                    </td>
+                    <td>{{ shippingaddress.name_receiver }}</td>
+                    <td>{{ shippingaddress.receiver_phone }}</td>
+                    <td>{{ shippingaddress.full_address }}</td>
+                    <td>{{ shippingaddress.phonenumberreceive }}</td>
+                    <td>
+                      <a class="btn btn-info" href="{% url 'shippingaddressdelete' account.id shippingaddress.id %}">X</a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+{% endif %}
+
+{% endblock %}

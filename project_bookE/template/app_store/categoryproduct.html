@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+ {% load humanize %} 
+ {% load static %}
+{% block title %}Nhà sách Việt{%endblock %} 
+{% block content %}
+  <div class="container-fluid pt-5">
+    <div><p style = "font-size:25px; color:black;"><img class="icon" src="{% static 'images/book1.png' %}" style = "width:40px;margin-right:10px">{{category1.category_name}}</p></div>
+    <div class="row px-xl-5 pb-3">
+      {% for p in product_list %}
+      <div class="col-lg-2 col-md-6 col-sm-12 pb-1">
+        <div class="card product-item border-0 mb-4">
+          <div
+            class="card-header product-img position-relative overflow-hidden bg-transparent border p-0"
+          >
+            <img
+              src="{{p.image.url}}"
+              alt=""
+              class="img-fluid w-100"
+              style="height: 250px; object-fit: contain"
+            />
+          </div>
+          <div
+            class="card-body border-left border-right text-center p-0 pt-4 pb-3"
+          >
+            <h6 class="text-truncate mb-3" style="">
+              <a href="{% url 'productdetail' p.slug %}" style="color: #2e2178">{{p.name}}</a>
+            </h6>
+            <h6 class="my-3">
+              <span class="avg-rating">{{p.avg_rating}}</span>/5
+              <i class="fa fa-star text-warning"></i
+              ><small class="pt-1"> ({{p.count_review}} đánh giá )</small>
+            </h6>
+            <div class="d-flex justify-content-center">
+              <h6>Giá: <b>{{p.price|intcomma}} VND </b></h6>
+            </div>
+          </div>
+          <div
+            class="card-footer d-flex justify-content-between bg-light border"
+          >
+            <a href="{% url 'addtocart' p.id %}" class="btn btn-sm text-dark p-0"
+              > <img class="icon" src="{% static 'images/cart3.png' %}" style = "width:35px;margin-left:20px"></a
+            >
+           
+              {% if p in wishListItem %}
+              <a href="{% url 'updateWishList' p.id %}?action=rmv"class="material-icons col-md-4" style = "color:#CE2029;margin-right:20px">favorite</a>
+              {% else %}
+              <a href="{% url 'updateWishList' p.id %}?action=add"  class="material-icons col-md-4" style = "color:#CE2029;margin-right:20px"> favorite_border</a>
+              {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+   <div class="col-12 pb-1">
+      <nav aria-label="Page navigation" >
+      <ul class="pagination justify-content-center mb-3">
+        {% if product_list.has_previous %}
+        <li class="page-item" >
+          <a
+            class="page-link"
+            href="?page={{ product_list.previous_page_number }}"  style ="color: black"
+            >Trước</a
+          >
+        </li>
+        {% else %}
+        <li class="page-item disabled" >
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true" 
+            >Trước</a
+          >
+        </li>
+        {% endif %} 
+       {% for i in product_list.paginator.page_range %} 
+        {%  if i >= product_list.number|add:"-3"  and i <= product_list.number|add:"3"  %} 
+          {% if i == product_list.number %}
+            <li class="page-item active"><a class="page-link" style ="color: black; background-color: #6F8FAF">{{i}}</a></li>
+            {% else %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{i}}" style ="color: black">{{i}}</a>
+            </li>
+            {% endif %} 
+          {% endif %} 
+        {% endfor %} 
+        {% if product_list.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ product_list.next_page_number }}" style ="color: black"
+            >Sau</a
+          >
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true" style ="color: black"
+            >Sau</a
+          >
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+ 
+    </div>
+    
+  </div>
+</div>
+</div>
+{% endblock %}

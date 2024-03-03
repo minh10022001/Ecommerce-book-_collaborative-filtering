@@ -1,0 +1,76 @@
+{% extends 'admin/admin_base.html' %}
+ {% load humanize %} 
+ 
+{% block content %}
+<section
+  class="section-content "
+  style="min-height: 84vh; background-color: white; padding-top: 50px"
+>
+  <div class="card mx-auto" style="max-width: auto; margin-top: 20px">
+    <div class="card-body">
+      <h4 class="card-title mb-4" style="font-weight: bold">Chỉnh sửa thông tin cá nhân</h4>
+      
+      <form action="" method="POST">
+        {% csrf_token %}
+
+        <div class="mb-4">
+          <div class="row">
+            <div class="col-md-6 form-group" >
+              <label style = 'color:black;margin-bottom: 10px;'><b>Tài khoản</b></label>
+              <p>{{ form.username }}</p>
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label style = 'color:black;margin-bottom: 10px;'><b>Số điện thoại</b></label>
+
+              <p>{{ form.phone_number }}</p>
+            </div>
+            <div class="col-md-6 form-group">
+              <label style = 'color:black;margin-bottom: 10px;'><b>Email</b></label>
+              <p>{{ form.email }}</p>
+            </div>
+            <div class="col-md-6 form-group">
+              <label style = 'color:black;margin-bottom: 10px;'><b>Họ tên</b></label>
+              <p>{{ form.fullname }}</p>
+            </div>
+            <div class="col-md-6 form-group">
+              <label style = 'color:black;margin-bottom: 10px;'><b>Giới tính</b></label>
+              <p>{{ form.gender }}</p>
+            </div>
+            <div class="col-md-6 form-group">
+              <label style = 'color:black;margin-bottom: 10px;'><b>Ngày sinh</b></label>
+              <p>{{ form.dob }}</p>
+            </div>
+        
+            <div class="col-md-6 form-group">
+              <label style = 'color:black;margin-bottom: 10px;'><b>Vị trí</b></label>
+              <p>{{ form.position }}</p>
+            </div>
+            <div class="col-md-6 form-group">
+              <label style = 'color:black;margin-bottom: 10px;'><b>Lương</b></label>
+              <p>{{ form.salary }}</p>
+            </div>
+             <div class="col-md-12 form-group">
+              <label style = 'color:black;margin-bottom: 10px;'><b>Ghi chú</b></label>
+              <p>{{ form.note }}</p>
+            </div>
+
+          </div>
+          <br />
+
+          <div style="text-align: center">
+            <button
+              class="btn btn-block btn-info "
+              style="font-size: 20px; border-radius: 5px"
+            >
+              Cập nhập
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}

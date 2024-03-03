@@ -1,0 +1,41 @@
+{% extends 'admin/admin_base.html' %}
+ {% load humanize %} 
+
+{% block content %}
+
+ 
+    <div class="container" style="padding-top: 100px">
+        <div class="row">
+            <div class="col-md-12 table-responsive mb-5">
+                <h3>Danh sách đơn hàng chờ xác nhận</h3>
+             
+                <table class="table table-hover" style="margin-top: 15px;">
+                    <thead style="background-color: white ; font-size: 17px;  align-content: center">
+                        <tr>
+                            <th class="align-middle" scope="col">STT</th>
+                            <th class="align-middle" scope="col">Mã đơn hàng</th>
+                            <th class="align-middle" scope="col">Khách hàng</th>
+                            <th class="align-middle" scope="col">Trạng thái</th>
+                            <th class="align-middle" scope="col">Ngày đặt</th>
+                            <th class="align-middle" scope="col">Tổng tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in pendingorders %}
+                        <tr style = "font-size: 17px; color: black">
+                            <td class="align-middle" scope="row">{{forloop.counter}}</td>
+                            <td class="align-middle"><a href="{% url 'adminorderdetail' order.id %}" style = "color: blue">#ORDER_{{order.id}}</a></td>
+                            <td class="align-middle">{{order.customerid.fullname}}</td>
+                            <td class="align-middle">{{order.status}}</td>
+                            <td class="align-middle">{{order.time}}</td>
+                            <td class="align-middle">{{order.paymentid.amount|intcomma}}</td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+   
+{% endblock %}

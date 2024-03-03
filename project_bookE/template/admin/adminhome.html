@@ -1,0 +1,23 @@
+{% extends 'admin/admin_base.html' %}
+ {% load humanize %} 
+ 
+{% block content %}
+
+<div class="container-fluid  mt-100" style = 'padding-top:100px'>
+			<div class="row">
+				 <div class="col-md-12">
+					<div class="card-body cart">
+                        <div class="col-sm-12 empty-cart-cls text-center">
+                            {% load static %}
+                            <img src="{% static 'images/user1.png' %}" width="100" height="100" class="img-fluid mb-4 mr-3">
+                            <h3><strong>Xin chào {{staff.1}}</strong></h3>
+                            <h4>Đây là trang dành cho nhân viên của hàng</h4>
+                         
+                        </div>
+                    </div>
+				</div>
+			</div>
+		</div>
+
+
+{% endblock %}
